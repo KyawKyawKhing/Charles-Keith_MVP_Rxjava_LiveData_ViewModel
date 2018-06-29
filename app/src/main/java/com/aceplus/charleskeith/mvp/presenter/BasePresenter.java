@@ -11,14 +11,14 @@ import com.aceplus.charleskeith.mvp.view.BaseView;
 
 public abstract class BasePresenter<V extends BaseView> extends ViewModel {
     protected V mView;
-    protected MutableLiveData<String> mErroLiveData;
+    protected MutableLiveData<String> mErrorLiveData;
 
     public void initPresenter(V view) {
         mView = view;
-        mErroLiveData = new MutableLiveData<>();
+        mErrorLiveData = new MutableLiveData<>();
     }
 
-    public MutableLiveData<String> getmErroLiveData() {
-        return mErroLiveData;
+    public MutableLiveData<String> getmErrorLiveData() {
+        return mErrorLiveData;
     }
 }

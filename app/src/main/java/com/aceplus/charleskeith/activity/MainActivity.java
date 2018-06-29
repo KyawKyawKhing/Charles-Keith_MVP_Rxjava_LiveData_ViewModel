@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
             }
         });
 
-        mPresenter.getmErroLiveData().observe(this, new Observer<String>() {
+        mPresenter.getmErrorLiveData().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 Toast.makeText(MainActivity.this, s, Toast.LENGTH_SHORT).show();

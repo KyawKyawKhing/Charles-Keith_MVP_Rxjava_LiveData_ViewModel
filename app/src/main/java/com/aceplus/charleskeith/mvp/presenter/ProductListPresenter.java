@@ -25,7 +25,7 @@ public class ProductListPresenter extends BasePresenter<ProductListView> impleme
     }
 
     public void onLoadData() {
-        ProductModel.getInstance(mView.getContext()).getAllData(mProductLiveData, mErroLiveData);
+        ProductModel.getInstance(mView.getContext()).getAllData(mProductLiveData, mErrorLiveData);
     }
 
     public LiveData<List<NewProductVO>> getmProductLiveData() {
