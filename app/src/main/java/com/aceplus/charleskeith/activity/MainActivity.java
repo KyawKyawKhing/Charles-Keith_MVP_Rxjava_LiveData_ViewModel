@@ -4,8 +4,10 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -40,10 +42,14 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
     ImageButton ibList;
     @BindView(R.id.ib_grid)
     ImageButton ibGrid;
+    @BindView(R.id.tv_item_size)
+    TextView tvItemSize;
     @BindView(R.id.rv_itemlist)
     RecyclerView rvItemList;
     @BindView(R.id.btn_up)
     ImageView btnUp;
+    @BindView(R.id.ns_list)
+    NestedScrollView nestedScrollView;
     ItemListAdapter adapter;
     ProductListPresenter mPresenter;
     SmartScrollListener mSmartScrollListener;
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
         adapter = new ItemListAdapter(getApplicationContext(), mPresenter);
         rvItemList.setAdapter(adapter);
         rvItemList.setLayoutManager(new LinearLayoutManager(this));
+        tvItemSize.setText(adapter.getItemCount() + " ITEMS");
         mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
             @Override
             public void onListEndReach() {
@@ -78,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
             @Override
             public void onChanged(@Nullable List<NewProductVO> productVOS) {
                 displayProductList(productVOS);
+                tvItemSize.setText(adapter.getItemCount() + " ITEMS");
+
             }
         });
 
@@ -94,25 +103,31 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
     }
 
     private void showHideWhenScroll() {
-        rvItemList.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                //dy > 0: scroll up; dy < 0: scroll down
-//                if (rvItemList.getScaleY() < 100) {
-//                    btnUp.setVisibility(View.GONE);
-//                } else {
-//                    btnUp.setVisibility(View.VISIBLE);
-//                }
-                if (dy > 10) btnUp.setVisibility(View.GONE);
-                else btnUp.setVisibility(View.VISIBLE);
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+//        rvItemList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                //dy > 0: scroll up; dy < 0: scroll down
+//                if (dy > 10) btnUp.setVisibility(View.GONE);
+//                else btnUp.setVisibility(View.VISIBLE);
+//                super.onScrolled(recyclerView, dx, dy);
+//            }
+//        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            btnUp.setVisibility(View.GONE);
+            nestedScrollView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                @Override
+                public void onScrollChange(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                    if (scrollY < 100) btnUp.setVisibility(View.GONE);
+                    else btnUp.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 
     @OnClick(R.id.btn_up)
     void onClickUp() {
-        rvItemList.getLayoutManager().scrollToPosition(0);
+//        rvItemList.getLayoutManager().scrollToPosition(0);
+        nestedScrollView.scrollTo(0, 0);
     }
 
     @OnClick(R.id.ib_list)
