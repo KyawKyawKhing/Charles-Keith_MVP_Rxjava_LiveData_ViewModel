@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_img"
+            android:layout_width="180dp"
+            android:layout_height="240dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            android:background="#fff">
+
+            <ImageView
+                android:id="@+id/img_product"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/kotlin" />
+
+            <TextView
+                android:id="@+id/tv_product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_below="@+id/img_product"
+                android:gravity="center"
+                android:text="Product Name" />
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:layout_width="64dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="-48dp"
+            android:layout_marginTop="24dp"
+            android:layout_toEndOf="@+id/rl_img"
+            android:background="#fff"
+            android:text="New"
+            android:textAlignment="center"
+            android:textSize="18dp" />
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>
