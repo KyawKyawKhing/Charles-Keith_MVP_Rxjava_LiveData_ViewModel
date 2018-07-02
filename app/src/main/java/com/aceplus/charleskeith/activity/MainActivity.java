@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -25,6 +24,7 @@ import com.aceplus.charleskeith.component.SmartScrollListener;
 import com.aceplus.charleskeith.data.vo.NewProductVO;
 import com.aceplus.charleskeith.mvp.presenter.ProductListPresenter;
 import com.aceplus.charleskeith.mvp.view.ProductListView;
+import com.aceplus.charleskeith.utils.Utils;
 
 import java.util.List;
 
@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
     ProductListPresenter mPresenter;
     SmartScrollListener mSmartScrollListener;
 
+    private GridLayoutManager mGridLayoutManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
         mPresenter = ViewModelProviders.of(this).get(ProductListPresenter.class);
         mPresenter.initPresenter(this);
 
+        Utils.initScreenWidthHeight(this);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
         toolbarTitle.setText(getResources().getString(R.string.app_name));
@@ -69,12 +74,14 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
 
         adapter = new ItemListAdapter(getApplicationContext(), mPresenter);
         rvItemList.setAdapter(adapter);
-        rvItemList.setLayoutManager(new LinearLayoutManager(this));
+        mGridLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
+        adapter.setSpanCount(1);
+        rvItemList.setLayoutManager(mGridLayoutManager);
         tvItemSize.setText(adapter.getItemCount() + " ITEMS");
         mSmartScrollListener = new SmartScrollListener(new SmartScrollListener.OnSmartScrollListener() {
             @Override
             public void onListEndReach() {
-                mPresenter.onLoadData();
+                mPresenter.onPullToRefresh();
             }
         });
         rvItemList.addOnScrollListener(mSmartScrollListener);
@@ -132,12 +139,14 @@ public class MainActivity extends AppCompatActivity implements ProductListView {
 
     @OnClick(R.id.ib_list)
     void onClickList() {
-        rvItemList.setLayoutManager(new LinearLayoutManager(this));
+        mGridLayoutManager.setSpanCount(1);
+        adapter.setSpanCount(1);
     }
 
     @OnClick(R.id.ib_grid)
     void onClickGrid() {
-        rvItemList.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        mGridLayoutManager.setSpanCount(2);
+        adapter.setSpanCount(2);
     }
 
     @Override

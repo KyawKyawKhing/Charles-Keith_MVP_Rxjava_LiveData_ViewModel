@@ -2,6 +2,7 @@ package com.aceplus.charleskeith.fragment;
 
 
 import android.app.Dialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,9 +14,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.aceplus.charleskeith.R;
-import com.aceplus.charleskeith.data.model.ProductModel;
-import com.aceplus.charleskeith.mvp.presenter.ProductListPresenter;
-import com.aceplus.charleskeith.mvp.view.ProductListView;
+import com.aceplus.charleskeith.mvp.presenter.ProductShowPresenter;
+import com.aceplus.charleskeith.mvp.view.ProductShowView;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
@@ -25,13 +25,13 @@ import butterknife.OnClick;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PhotoShowFragment extends Fragment implements ProductListView {
+public class PhotoShowFragment extends Fragment implements ProductShowView {
 
     @BindView(R.id.iv_item)
     ImageView ivItem;
     int productId = 1;
     String image = "";
-    ProductListPresenter mProductPresenter;
+    ProductShowPresenter mProductPresenter;
 
     public static Fragment newInstnce(int productId) {
         PhotoShowFragment fragment = new PhotoShowFragment();
@@ -55,11 +55,13 @@ public class PhotoShowFragment extends Fragment implements ProductListView {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_photo_show, container, false);
         ButterKnife.bind(this, view);
-//        mProductPresenter = ViewModelProviders.of(this).get(ProductListPresenter.class);
-//        mProductPresenter.initPresenter(this);
-//        image = mProductPresenter.getProduct(productId).getProductImage();
 
-        image = ProductModel.getInstance(getContext()).getProductById(productId).getProductImage();
+        //
+        mProductPresenter = ViewModelProviders.of(getActivity()).get(ProductShowPresenter.class);
+        mProductPresenter.initPresenter(this);
+        image = mProductPresenter.getProductById(productId).getProductImage();
+
+//        image = ProductModel.getInstance(getContext()).getProductById(productId).getProductImage();
         Glide.with(getContext())
                 .load(image)
                 .into(ivItem);
@@ -83,11 +85,6 @@ public class PhotoShowFragment extends Fragment implements ProductListView {
                 dialog.dismiss();
             }
         });
-    }
-
-    @Override
-    public void goToProductShow(int currentPosition) {
-
     }
 
     @Nullable

@@ -16,6 +16,7 @@ import com.aceplus.charleskeith.viewholder.ItemListViewHolder;
 
 public class ItemListAdapter extends BaseRecyclerAdapter<ItemListViewHolder, NewProductVO> {
     private ProductListItemDelegate delegate;
+    private int mSpanCount;
 
     public ItemListAdapter(Context context, ProductListItemDelegate delegate) {
         super(context);
@@ -27,5 +28,16 @@ public class ItemListAdapter extends BaseRecyclerAdapter<ItemListViewHolder, New
     public ItemListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.rv_list_item, parent, false);
         return new ItemListViewHolder(view, delegate);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull ItemListViewHolder holder, int position) {
+        super.onBindViewHolder(holder, position);
+        holder.setSpanCount(mSpanCount);
+    }
+
+    public void setSpanCount(int spanCount) {
+        mSpanCount = spanCount;
+        notifyDataSetChanged();
     }
 }

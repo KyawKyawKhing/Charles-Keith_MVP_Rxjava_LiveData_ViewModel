@@ -21,10 +21,10 @@ public class ProductListPresenter extends BasePresenter<ProductListView> impleme
     public void initPresenter(ProductListView view) {
         super.initPresenter(view);
         mProductLiveData = new MutableLiveData<>();
-        onLoadData();
+        loadData();
     }
 
-    public void onLoadData() {
+    private void loadData() {
         ProductModel.getInstance(mView.getContext()).getAllData(mProductLiveData, mErrorLiveData);
     }
 
@@ -39,5 +39,9 @@ public class ProductListPresenter extends BasePresenter<ProductListView> impleme
     @Override
     public void onTapListItem(int currentPosition) {
         mView.goToProductShow(currentPosition);
+    }
+
+    public void onPullToRefresh() {
+        loadData();
     }
 }

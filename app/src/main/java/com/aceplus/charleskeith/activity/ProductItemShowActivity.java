@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aceplus.charleskeith.R;
 import com.aceplus.charleskeith.adapter.ItemShowViewPagerAdapter;
@@ -66,6 +67,12 @@ public class ProductItemShowActivity extends AppCompatActivity implements Produc
             public void onChanged(@Nullable List<NewProductVO> productVOS) {
                 adapter.setNewVPList(productVOS);
                 vpItemList.setCurrentItem(currentPosition);
+            }
+        });
+        mProductPresenter.getmErrorLiveData().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                Toast.makeText(ProductItemShowActivity.this, s, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -11,7 +11,7 @@ import com.aceplus.charleskeith.fragment.PhotoShowFragment;
  */
 
 public class PhotoShowViewPagerAdapter extends FragmentStatePagerAdapter {
-    int productId;
+    private int productId;//if multiple images show in vertical viewpager,image list will be here
 
     public PhotoShowViewPagerAdapter(FragmentManager fm, int productId) {
         super(fm);

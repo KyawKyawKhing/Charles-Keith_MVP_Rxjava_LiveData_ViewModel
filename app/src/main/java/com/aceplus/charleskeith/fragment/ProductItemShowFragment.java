@@ -1,5 +1,6 @@
 package com.aceplus.charleskeith.fragment;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,12 +22,13 @@ import com.aceplus.charleskeith.data.vo.NewProductVO;
 import com.aceplus.charleskeith.delegate.ProductShowPresenterDelegate;
 import com.aceplus.charleskeith.mvp.presenter.ProductShowPresenter;
 import com.aceplus.charleskeith.mvp.view.ProductShowView;
+import com.aceplus.charleskeith.utils.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ProductItemShowFragment extends Fragment {
+public class ProductItemShowFragment extends Fragment implements ProductShowView {
 
     @BindView(R.id.tv_item_title)
     TextView tvItemTitle;
@@ -101,6 +103,12 @@ public class ProductItemShowFragment extends Fragment {
         rvColorChoose.setAdapter(rvAdapter);
         rvColorChoose.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+        //if different object,use this style
+        //not connection(if one changed,no change another) with activity and fragments
+        mPresenter = ViewModelProviders.of(getActivity()).get(ProductShowPresenter.class);
+        mPresenter.initPresenter((ProductShowView) getActivity());
+
         //TODO to ask sayar
         NewProductVO productVO = mPresenter.getProductById(productId);
         tvItemTitle.setText(productVO.getProductTitle());
@@ -109,9 +117,12 @@ public class ProductItemShowFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
+        //if same object,use this style
+        // connection (if one changed,change another) with activity and fragments
         if (context instanceof ProductShowPresenterDelegate) {
             ProductShowPresenterDelegate presenterDelegate = (ProductShowPresenterDelegate) context;
-            mPresenter = (ProductShowPresenter) presenterDelegate.getPresenter();
+//            mPresenter = (ProductShowPresenter) presenterDelegate.getPresenter();
         }
     }
 
@@ -119,9 +130,9 @@ public class ProductItemShowFragment extends Fragment {
         for (int i = 0; i < count; i++) {
             View view = new View(getContext());
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    22,
-                    22);
-            layoutParams.setMargins(10, 10, 10, 10);
+                    Utils.convertDpToPixel(8, getContext()),
+                    Utils.convertDpToPixel(8, getContext()));
+            layoutParams.setMargins(0, 0, 0, Utils.convertDpToPixel(8, getContext()));
             view.setLayoutParams(layoutParams);
             view.setBackground(getResources().getDrawable(R.drawable.circle_indicator_default));
             llVpIndicator.addView(view);

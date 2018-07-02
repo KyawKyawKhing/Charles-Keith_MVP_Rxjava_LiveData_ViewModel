@@ -12,14 +12,15 @@
             android:id="@+id/iv_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/kotlin" />
+            android:src="@drawable/ckblack" />
 
         <ImageButton
             android:id="@+id/ib_close"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
             android:background="@null"
             android:backgroundTint="#000"
             android:src="@android:drawable/ic_menu_close_clear_cancel" />

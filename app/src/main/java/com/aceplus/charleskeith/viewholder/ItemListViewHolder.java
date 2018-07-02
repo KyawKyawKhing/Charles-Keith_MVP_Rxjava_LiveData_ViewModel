@@ -1,5 +1,6 @@
 package com.aceplus.charleskeith.viewholder;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -7,6 +8,7 @@ import android.widget.TextView;
 import com.aceplus.charleskeith.R;
 import com.aceplus.charleskeith.data.vo.NewProductVO;
 import com.aceplus.charleskeith.delegate.ProductListItemDelegate;
+import com.aceplus.charleskeith.utils.Utils;
 import com.bumptech.glide.Glide;
 
 import butterknife.BindView;
@@ -39,5 +41,17 @@ public class ItemListViewHolder extends BaseViewHolder<NewProductVO> implements 
     @Override
     public void onClick(View v) {
         delegate.onTapListItem(getAdapterPosition());
+    }
+
+    public void setSpanCount(int spanCount) {
+        if (spanCount == 1) {
+            Log.e("col", "1");
+            imgProduct.getLayoutParams().width = (int) (Utils.getScreenWidth() / 2);
+            imgProduct.getLayoutParams().height = (int) (Utils.getScreenWidth() / 1.5);
+        } else if (spanCount == 2) {
+            Log.e("col", "2");
+            imgProduct.getLayoutParams().width = (int) (Utils.getScreenWidth() / 2);
+            imgProduct.getLayoutParams().height = (int) (Utils.getScreenWidth() / 1.8);
+        }
     }
 }
